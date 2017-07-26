@@ -29,4 +29,5 @@ hs_err_pid*
 /socapp.iml
 /test.iml
 
-/target
+target
+src/main/resources/static
