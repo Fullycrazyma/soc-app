@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { UserService } from './service/user.service';
+
 const MODULES = [
   CommonModule,
   RouterModule,
@@ -14,7 +16,9 @@ const PIPES = [];
 
 const COMPONENTS = [];
 
-const PROVIDERS = [];
+const PROVIDERS = [
+  UserService
+];
 
 @NgModule({
   imports: [
