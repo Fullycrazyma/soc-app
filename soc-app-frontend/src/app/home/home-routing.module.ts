@@ -9,7 +9,6 @@ export const HOME_ROUTES: Routes = [
 		path: '',
 		component: HomeComponent,
 		children: [
-			// { path: '', component: Component },
       { path: 'users', component: UserListComponent },
 			{ path: '**', redirectTo: '' }
 		]
