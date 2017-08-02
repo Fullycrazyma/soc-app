@@ -2,13 +2,14 @@ package com.socapp.model;
 
 import com.socapp.model.validation.Email;
 import com.socapp.model.validation.Password;
-import com.sun.xml.internal.bind.v2.model.core.ID;
+import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class User {
 
+    @Id
     private String id;
 
     @NotNull

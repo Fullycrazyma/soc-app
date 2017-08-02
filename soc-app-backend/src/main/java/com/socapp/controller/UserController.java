@@ -12,8 +12,12 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(path = "/", method = RequestMethod.POST)
     public User createUser(@Valid @RequestBody User user) {
@@ -21,13 +25,13 @@ public class UserController {
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        return userService.getAll();
+    public List<User> getAllUsers() {
+        return userService.findAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable String id) {
-        return userService.findOne(id);
+        return userService.findById(id);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.PUT)
@@ -35,9 +39,8 @@ public class UserController {
         return userService.save(user);
     }
 
-
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable String id) {
-        userService.remove(id);
+        userService.delete(id);
     }
 }

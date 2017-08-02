@@ -1,57 +1,37 @@
 package com.socapp.service;
 
 import com.socapp.model.User;
-import com.socapp.model.UserRole;
+import com.socapp.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
-public class UserService implements BaseService<User> {
+public class UserService {
 
-    private List<User> userList = new ArrayList<>();
+    private UserRepository userRepository;
 
-    @PostConstruct
-    void initUserList() {
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setUsername("username");
-        user.setPassword("Test1234");
-        user.setEmail("test@test.ru");
-        user.setFirstName("firstname");
-        user.setLastName("lastname");
-        user.setUserRole(UserRole.USER);
-
-        userList.add(user);
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @Override
     public User save(User user) {
         user.setId(UUID.randomUUID().toString());
-        userList.add(user);
-        return user;
+        return userRepository.save(user);
     }
 
-    public List<User> getAll() {
-        return userList;
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    @Override
-    public List<User> find(String username) {
-        return userList.stream().filter(user -> user.getUsername().equals(username)).collect(Collectors.toList());
+    public User findById(String id) {
+        return userRepository.findOne(id);
     }
 
-    @Override
-    public User findOne(String id) {
-        return userList.stream().filter(user -> user.getId().equals(id)).findFirst().get();
-    }
-
-    @Override
-    public void remove(String id) {
-        userList.removeIf(u -> u.getId().equals(id));
+    public void delete(String id) {
+        userRepository.delete(id);
     }
 }
