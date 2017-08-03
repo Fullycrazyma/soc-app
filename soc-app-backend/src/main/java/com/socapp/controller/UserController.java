@@ -44,8 +44,19 @@ public class UserController {
     }
 
     @RequestMapping(path = "/", method = RequestMethod.PUT)
-    public User updateUser(@Valid @RequestBody User user) {
+    public List<User> updateUsers(@Valid @RequestBody List<User> users) {
+        return userService.save(users);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public User updateUser(@RequestParam("id") String id, @Valid @RequestBody User user) {
+        user.setId(id);
         return userService.save(user);
+    }
+
+    @RequestMapping(path = "/", method = RequestMethod.DELETE)
+    public void deleteAllUsers() {
+        userService.deleteAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)

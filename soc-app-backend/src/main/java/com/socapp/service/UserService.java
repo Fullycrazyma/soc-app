@@ -19,6 +19,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public List<User> save(List<User> users) {
+        users.forEach(user -> user.setId(UUID.randomUUID().toString()));
+        return userRepository.save(users);
+    }
+
     public User save(User user) {
         user.setId(UUID.randomUUID().toString());
         return userRepository.save(user);
@@ -34,6 +39,10 @@ public class UserService {
 
     public User findById(String id) {
         return userRepository.findOne(id);
+    }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 
     public void delete(String id) {
