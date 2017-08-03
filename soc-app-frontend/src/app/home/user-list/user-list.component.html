@@ -1,2 +1,3 @@
 <p>{{ username }}</p>
-<p>{{ users }}</p>
+
+<p *ngFor="let user of users">{{ user | json }}</p>
