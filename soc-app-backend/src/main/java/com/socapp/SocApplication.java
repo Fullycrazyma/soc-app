@@ -15,6 +15,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class SocApplication {
     public static void main(String[] args) {
@@ -53,7 +55,8 @@ public class SocApplication {
                     .select()
                     .apis(RequestHandlerSelectors.basePackage("com.socapp"))
                     .paths(PathSelectors.any())
-                    .build();
+                    .build()
+                    .genericModelSubstitutes(Optional.class);
         }
     }
 }

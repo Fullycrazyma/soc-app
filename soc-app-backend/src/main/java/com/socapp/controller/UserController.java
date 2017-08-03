@@ -3,10 +3,12 @@ package com.socapp.controller;
 import com.socapp.model.User;
 import com.socapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -25,7 +27,14 @@ public class UserController {
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+
+        if (page.isPresent() && size.isPresent()) {
+            return userService.findAll(new PageRequest(page.get(), size.get()));
+        }
+
         return userService.findAll();
     }
 

@@ -3,6 +3,7 @@ package com.socapp.service;
 import com.socapp.model.User;
 import com.socapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public List<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).getContent();
     }
 
     public User findById(String id) {
