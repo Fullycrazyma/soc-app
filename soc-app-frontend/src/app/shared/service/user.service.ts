@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: Http) { }
 
   getUsers(): Observable<Array<User>> {
-		return this.http.get(environment.apiUrl + '/users')
+		return this.http.get(environment.apiUrl + '/users/')
 			.map(data => data.json());
 	}
 
