@@ -7,7 +7,7 @@ import { UserListComponent } from './user-list/user-list.component';
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     HomeRoutingModule
   ],
   declarations: [HomeComponent, UserListComponent]
