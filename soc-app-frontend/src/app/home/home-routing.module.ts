@@ -9,8 +9,8 @@ export const HOME_ROUTES: Routes = [
 		path: '',
 		component: HomeComponent,
 		children: [
-      { path: 'users', component: UserListComponent },
-			{ path: '**', redirectTo: '' }
+			{ path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'users', component: UserListComponent }
 		]
 	},
 ];
