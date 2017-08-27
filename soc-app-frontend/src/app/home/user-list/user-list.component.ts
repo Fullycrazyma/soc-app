@@ -25,7 +25,7 @@ export class UserListComponent implements OnInit {
         );
     }
 
-    createUser() {
+    createUser(): void {
         const lastUserId = this.users === undefined || this.users.length === 0
             ? 0 : +this.users[this.users.length - 1].id;
 
@@ -40,7 +40,13 @@ export class UserListComponent implements OnInit {
         );
 
         this.userService.addUser(user).subscribe(
-            () => { this.getUsers(); }
+            () => this.getUsers()
+        );
+    }
+
+    deleteUser(user: User): void {
+        this.userService.deleteUser(user.id).subscribe(
+            () => this.getUsers()
         );
     }
 }
