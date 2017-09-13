@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/Rx';
-
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 import { User } from './user';
@@ -11,37 +8,44 @@ import { User } from './user';
 @Injectable()
 export class UserService {
 
-    private url = '/users';
+    private url = '/users/';
 
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
+
+    createUser(user: User): Observable<User> {
+        return this.http.post<User>(this.getUrl(), JSON.stringify(user));
+    }
 
     getUsers(): Observable<Array<User>> {
-        return this.http.get(environment.apiUrl + this.url)
-            .map(res => res.json());
+        return this.http.get<Array<User>>(this.getUrl());
     }
 
     getUser(id: string): Observable<User> {
-        return this.http.get(this.getUserUrl(id))
-            .map(res => res.json());
+        return this.http.get<User>(this.getIdUrl(id));
     }
 
-    addUser(user: User) {
-        return this.http.post(environment.apiUrl + this.url, JSON.stringify(user))
-            .map(res => res.json());
+    updateUsers(users: Array<User>): Observable<Array<User>> {
+        return this.http.put<Array<User>>(this.getUrl(), JSON.stringify(users));
     }
 
-    updateUser(user: User) {
-        return this.http.put(this.getUserUrl(user.id), JSON.stringify(user))
-            .map(res => res.json());
+    updateUser(user: User): Observable<User> {
+        return this.http.put<User>(this.getIdUrl(user.id), JSON.stringify(user));
     }
 
-    deleteUser(id: string) {
-        return this.http.delete(this.getUserUrl(id))
-            .map(res => res.json());
+    deleteUsers(): Observable<void> {
+        return this.http.delete<void>(this.getUrl());
     }
 
-    private getUserUrl(id: string) {
-        return environment.apiUrl + this.url + '/' + id;
+    deleteUser(id: string): Observable<void> {
+        return this.http.delete<void>(this.getIdUrl(id));
+    }
+
+    private getUrl(): string {
+        return environment.apiUrl + this.url;
+    }
+
+    private getIdUrl(id: string) {
+        return this.getUrl() + id;
     }
 
 }

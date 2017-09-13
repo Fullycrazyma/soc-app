@@ -1,0 +1,7 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3" *ngFor="let type of types">
+      <div class="type-plate" [routerLink]="['/soctable/', type ]">{{ type }}</div>
+    </div>
+  </div>
+</div>

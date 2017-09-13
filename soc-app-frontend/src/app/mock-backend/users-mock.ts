@@ -70,6 +70,33 @@ export function usersFakeBackend(connection: MockConnection) {
         return;
     }
 
+    // update user
+    if (connection.request.url.match(/\/api\/users\/\d+$/) && connection.request.method === RequestMethod.Put) {
+        // check for fake auth token in header and return user if valid,
+        // this security is implemented server side in a real application
+        if (isAuthenticated(connection)) {
+            // find user by id in users array
+            const updatedUser = JSON.parse(connection.request.getBody());
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i];
+                if (user.id === updatedUser.id) {
+                    // update user
+                    users[i] = updatedUser;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    break;
+                }
+            }
+
+            // respond 200 OK
+            connection.mockRespond(new Response(new ResponseOptions({ status: 200 })));
+        } else {
+            // return 401 not authorised if token is null or invalid
+            connection.mockRespond(new Response(new ResponseOptions({ status: 401 })));
+        }
+
+        return;
+    }
+
     // delete user
     if (connection.request.url.match(/\/api\/users\/\d+$/) && connection.request.method === RequestMethod.Delete) {
         // check for fake auth token in header and return user if valid,

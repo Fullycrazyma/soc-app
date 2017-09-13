@@ -1,7 +1,8 @@
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod, XHRBackend, RequestOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-
-import { usersFakeBackend } from './user-mock';
+import { HttpClient } from '@angular/common/http';
+import { usersFakeBackend } from './users-mock';
+import { typesFakeBackend } from './types-mock';
 
 export function isAuthenticated(connection: MockConnection): boolean {
     return true;
@@ -52,6 +53,8 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 
             if (path.startsWith('/api/users')) {
                 return usersFakeBackend(connection);
+            } else if (path.startsWith('/api/types')) {
+                return typesFakeBackend(connection);
             }
 
             // pass through any requests not handled above
@@ -81,7 +84,7 @@ export function fakeBackendFactory(backend: MockBackend, options: BaseRequestOpt
 
 export let fakeBackendProvider = {
     // use fake backend in place of Http service for backend-less development
-    provide: Http,
+    provide: HttpClient,
     useFactory: fakeBackendFactory,
     deps: [MockBackend, BaseRequestOptions, XHRBackend]
 };

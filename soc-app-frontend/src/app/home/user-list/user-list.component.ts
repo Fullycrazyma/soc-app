@@ -39,7 +39,7 @@ export class UserListComponent implements OnInit {
             'USER'
         );
 
-        this.userService.addUser(user).subscribe(
+        this.userService.createUser(user).subscribe(
             () => this.getUsers()
         );
     }
