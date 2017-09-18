@@ -42,7 +42,10 @@ public class SocApplication {
     public static class WebConfig extends WebMvcConfigurerAdapter {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**").allowedOrigins("http://localhost:4200");
+            registry
+                .addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins("http://localhost:4200");
         }
     }
 
