@@ -2,15 +2,35 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {
+    HttpClientModule,
+    HTTP_INTERCEPTORS,
+    HttpInterceptor,
+    HttpHandler,
+    HttpRequest,
+    HttpEvent,
+    HttpHeaders,
+    HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/do';
 
 import { UserService } from './service/user.service';
 import { TypeService } from './service/type.service';
 
-// For mock backend purposes
-// import { fakeBackendProvider } from '../mock-backend/mock-backend';
-// import { MockBackend, MockConnection } from '@angular/http/testing';
-// import { BaseRequestOptions } from '@angular/http';
+export class AddHeaderInterceptor implements HttpInterceptor {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const started = Date.now();
+        return next.handle(req.clone({ headers: req.headers.set('Content-Type', 'application/json') })).do(
+            event => {
+                console.log(event);
+                if (event instanceof HttpResponse) {
+                    const elapsed = Date.now() - started;
+                    console.log(`Request for ${req.method} ${req.urlWithParams} took ${elapsed} ms.`);
+                }
+            }
+        );
+    }
+}
 
 const MODULES = [
     CommonModule,
@@ -27,11 +47,11 @@ const COMPONENTS = [];
 const PROVIDERS = [
     UserService,
     TypeService,
-
-    // Providers used to create fake backend
-    // fakeBackendProvider,
-    // MockBackend,
-    // BaseRequestOptions
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AddHeaderInterceptor,
+        multi: true,
+    }
 ];
 
 @NgModule({

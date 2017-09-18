@@ -1,5 +1,7 @@
 import { TypeService } from './../../shared/service/type.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -17,12 +19,13 @@ export class SocioTypeComponent implements OnInit {
         private typeService: TypeService) { }
 
     ngOnInit() {
-        console.log(this.activatedRoute.params);
         this.activatedRoute.params.map(p => p.type).subscribe(
             (type) => {
-                console.log(type);
                 this.typeService.getTypeDescription(type).subscribe(
-                    desc => this.typeDescription = desc
+                    (desc) => {
+                        console.log(desc);
+                        this.typeDescription = desc;
+                    }
                 );
             }
         );
